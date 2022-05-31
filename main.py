@@ -19,15 +19,15 @@ def load_data_into_list():
 
 # Recount/reorder the list from 1, 2, 3, etc...
 def count():
-    if not data_list:
-        return print("There is no data.")
-    else:
+    if len(data_list) != 0:
         for item in range(len(data_list)):
             item += 1
             m = re.match("(\d+\.\s+)(.*)", data_list[int(item) - 1])
             s = data_list[int(item) - 1].replace(m.groups()[0], str(item) + ". ")
             data_list[int(item) - 1] = s
             insert_data_into_file()
+    else:
+        return print("There is no data.")
         
 # Take what's inside data_list and dump it into the data.txt file
 def insert_data_into_file():
@@ -56,7 +56,7 @@ def add_data():
 
 # Display data in console
 def display_data():
-    if data_list:
+    if len(data_list) != 0:
         for item in data_list:
             print(item.replace("\n", ""))
     else:
@@ -82,7 +82,7 @@ def delete_data_item():
 
 # Swap two data items
 def swap():
-    if data_list:
+    if len(data_list) != 0:
         inp_swap_1 = input("Enter the number of the entry to swap with: ")
         inp_swap_2 = input("Enter the second number of the entry to swap with: ")
         
@@ -104,10 +104,13 @@ def swap():
     else:
         return print("There is no data...")
 
+# To loop the menu
 exit_menu_loop = False
 
+# Load data into data_list list
 load_data_into_list()
 
+# Menu loop
 while not exit_menu_loop:
     print("----------------------------")
     print("------------Menu------------")
