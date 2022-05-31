@@ -22,7 +22,7 @@ def count():
     if len(data_list) != 0:
         for item in range(len(data_list)):
             item += 1
-            m = re.match("(\d+\.\s+)(.*)", data_list[int(item) - 1])
+            m = re.match("^(\d+\.\s+)(.*)", data_list[int(item) - 1])
             s = data_list[int(item) - 1].replace(m.groups()[0], str(item) + ". ")
             data_list[int(item) - 1] = s
             insert_data_into_file()
@@ -43,7 +43,7 @@ def add_data():
     
     with open("data.txt", "r") as file:
         if os.stat("data.txt").st_size != 0:
-            last_line_number = re.search("\d+", file.readlines()[-1])
+            last_line_number = re.search("^(\d+)", file.readlines()[-1])
         else:
             last_line_number.append(0)
             
@@ -65,20 +65,23 @@ def display_data():
 # Delete an item in data_list and update data.txt
 def delete_data_item():
     inp = input("Type the number of the entry to delete: ")
-    if inp != "0":
-        if os.stat("data.txt").st_size != 0:
-            if inp != "0":
-                item = data_list[int(inp) - 1]
-                data_list.remove(item)
-                insert_data_into_file()
-                print(item.replace('\n', '') + ", has been removed.")
-                count() # Reorder the data_list and data.txt to go from 1, 2, 3, etc...
+    if not int(inp) > (len(data_list)):
+        if inp != "0":
+            if os.stat("data.txt").st_size != 0:
+                if inp != "0":
+                    item = data_list[int(inp) - 1]
+                    data_list.remove(item)
+                    insert_data_into_file()
+                    print(item.replace('\n', '') + ", has been removed.")
+                    count() # Reorder the data_list and data.txt to go from 1, 2, 3, etc...
+                else:
+                    return print("0 cannot be removed since no entry can be 0.")
             else:
-                return print("0 cannot be removed since no entry can be 0.")
+                return print("File \"data.txt\" is empty!")
         else:
-            return print("File \"data.txt\" is empty!")
+            return print("Cannot choose 0 as an entry to delete...")
     else:
-        return print("Cannot choose 0 as an entry to delete...")
+        return print("Number cannot be above " + str(len(data_list)) + "...")
 
 # Swap two data items
 def swap():
