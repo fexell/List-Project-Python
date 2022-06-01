@@ -11,7 +11,7 @@ def load_data_into_list():
             for item in file.readlines():
                 data_list.append(item)
         else:
-            return print("File \"data.txt\" is empty!")
+            return print("File \"data.txt\" is empty...")
         
         file.close()
     
