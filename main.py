@@ -21,13 +21,21 @@ def load_data_into_list():
 def count():
     if len(data_list) != 0:
         for item in range(len(data_list)):
+            
+            # Since there shouldn't be an item that is 0
             item += 1
+            
+            # m = match
             m = re.match("^(\d+\.\s+)(.*)", data_list[int(item) - 1])
+            
+            # s = search, and replace
             s = data_list[int(item) - 1].replace(m.groups()[0], str(item) + ". ")
             data_list[int(item) - 1] = s
+            
+            # Update data.txt file
             insert_data_into_file()
     else:
-        return print("There is no data.")
+        return print("There is no data...")
         
 # Take what's inside data_list and dump it into the data.txt file
 def insert_data_into_file():
@@ -45,13 +53,19 @@ def add_data():
         if os.stat("data.txt").st_size != 0:
             last_line_number = re.search("^(\d+)", file.readlines()[-1])
         else:
-            last_line_number.append(0)
+            last_line_number.append(0) # If data.txt file is empty append 0 to last_line_number and then increase it in append
             
         file.close()
 
     inp = input("Data to add: ")
+    
+    # Append the last_line_number + 1 to make the file go 1, 2, 3, etc...
     data_list.append(str((int(last_line_number[0]) + 1)) + ". " + inp + "\n")
+    
+    # Update data.txt file
     insert_data_into_file()
+    
+    #Let the user know that the item has been added to the data.txt file
     print(str((int(last_line_number[0]) + 1)) + ". " + inp + ", has been added.")
 
 # Display data in console
@@ -71,13 +85,19 @@ def delete_data_item():
                 if inp != "0":
                     item = data_list[int(inp) - 1]
                     data_list.remove(item)
+                    
+                    # Update data.txt file
                     insert_data_into_file()
+                    
+                    #Print and remove new-lines (\n), and let the user know which item was deleted
                     print(item.replace('\n', '') + ", has been removed.")
-                    count() # Reorder the data_list and data.txt to go from 1, 2, 3, etc...
+                    
+                    # Reorder the data_list and data.txt to go from 1, 2, 3, etc...
+                    count()
                 else:
-                    return print("0 cannot be removed since no entry can be 0.")
+                    return print("0 cannot be removed since no entry can be 0...")
             else:
-                return print("File \"data.txt\" is empty!")
+                return print("File \"data.txt\" is empty...")
         else:
             return print("Cannot choose 0 as an entry to delete...")
     else:
@@ -85,19 +105,30 @@ def delete_data_item():
 
 # Swap two data items
 def swap():
+    
+    # If the data_list list is not empty
     if len(data_list) != 0:
         inp_swap_1 = input("Enter the number of the entry to swap with: ")
         inp_swap_2 = input("Enter the second number of the entry to swap with: ")
         
+        # First check if the input was the number 0
         if(inp_swap_1 != "0" and inp_swap_2 != "0"):
+            
+            # If the length of the inputs are not 0
             if len(inp_swap_1) != 0 or len(inp_swap_2) != 0:
+                
+                # If the inputs are the same number to swap with
                 if inp_swap_1 != inp_swap_2:
                     to_swap_with_1 = data_list[int(inp_swap_1) - 1]
                     to_swap_with_2 = data_list[int(inp_swap_2) - 1]
                     data_list[int(inp_swap_1) - 1] = to_swap_with_2
                     data_list[int(inp_swap_2) - 1] = to_swap_with_1
+                    
+                    # Update data.txt file
                     insert_data_into_file()
-                    count() # Reorder the data_list and data.txt to go from 1, 2, 3, etc...
+                    
+                    # Reorder the data_list and data.txt to go from 1, 2, 3, etc...
+                    count()
                 else:
                     return print("You cannot swap with the same number...")
             else:
@@ -107,7 +138,7 @@ def swap():
     else:
         return print("There is no data...")
 
-# To loop the menu
+# Variable to loop the menu
 exit_menu_loop = False
 
 # Load data into data_list list
@@ -115,15 +146,15 @@ load_data_into_list()
 
 # Menu loop
 while not exit_menu_loop:
-    print("----------------------------")
-    print("------------Menu------------")
+    print("--------------------------------")
+    print("--------------Menu--------------")
     print("1. Display Data")
     print("2. Add Data")
     print("3. Delete Data Item")
     print("4. Swap")
     print("0. Exit Program")
-    print("----------------------------")
-    print("----------------------------")
+    print("--------------------------------")
+    print("--------------------------------")
     
     inp = input(">> ")
     
