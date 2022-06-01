@@ -59,7 +59,7 @@ def add_data():
 
     inp = input("Data to add: ")
     
-    # Append the last_line_number + 1 to make the file go 1, 2, 3, etc...
+    # Append the last_line_number + 1 to make the added item go to one step above the last number of the last item
     data_list.append(str((int(last_line_number[0]) + 1)) + ". " + inp + "\n")
     
     # Update data.txt file
@@ -79,23 +79,26 @@ def display_data():
 # Delete an item in data_list and update data.txt
 def delete_data_item():
     inp = input("Type the number of the entry to delete: ")
+    
+    # If input is not greater than the number of the last entry in data.txt file
     if not int(inp) > (len(data_list)):
+        
+        # If input is not 0
         if inp != "0":
+            
+            # If the data.txt is not empty
             if os.stat("data.txt").st_size != 0:
-                if inp != "0":
-                    item = data_list[int(inp) - 1]
-                    data_list.remove(item)
-                    
-                    # Update data.txt file
-                    insert_data_into_file()
-                    
-                    #Print and remove new-lines (\n), and let the user know which item was deleted
-                    print(item.replace('\n', '') + ", has been removed.")
-                    
-                    # Reorder the data_list and data.txt to go from 1, 2, 3, etc...
-                    count()
-                else:
-                    return print("0 cannot be removed since no entry can be 0...")
+                item = data_list[int(inp) - 1]
+                data_list.remove(item)
+                
+                # Update data.txt file
+                insert_data_into_file()
+                
+                #Print and remove new-lines (\n), and let the user know which item was deleted
+                print(item.replace('\n', '') + ", has been removed.")
+                
+                # Reorder the data_list and data.txt to go from 1, 2, 3, etc...
+                count()
             else:
                 return print("File \"data.txt\" is empty...")
         else:
@@ -137,6 +140,28 @@ def swap():
             return print("You cannot swap with number 0, since there can't be a number 0...")
     else:
         return print("There is no data...")
+    
+def edit():
+    
+    # If the data_list list is not empty
+    if len(data_list) != 0:
+        inp = int(input("Enter the number of the entry to edit: "))
+
+        # If input is not greater than the number of the last entry in data.txt file
+        if not int(inp) > (len(data_list)):
+            
+            # If input is not 0
+            if inp != "0":
+                to_edit = re.search("(\d+\.\s+)(.*)", data_list[inp - 1])
+                inp_2 = input("Enter what to edit entry \"" + str(inp) + "\" with: ")
+                data_list[inp - 1] = to_edit.groups()[0] + inp_2
+                insert_data_into_file()
+            else:
+                return print("You cannot swap with number 0, since there can't be a number 0...")
+        else:
+            return print("Number cannot be above " + str(len(data_list)) + "...")
+    else:
+        return print("There is no data...")
 
 # Variable to loop the menu
 exit_menu_loop = False
@@ -152,6 +177,7 @@ while not exit_menu_loop:
     print("2. Add Data")
     print("3. Delete Data Item")
     print("4. Swap")
+    print("5. Edit")
     print("0. Exit Program")
     print("--------------------------------")
     print("--------------------------------")
@@ -168,4 +194,6 @@ while not exit_menu_loop:
         delete_data_item()
     elif(re.search("4", inp)):
         swap()
+    elif(re.search("5", inp)):
+        edit()
         
